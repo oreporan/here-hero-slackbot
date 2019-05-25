@@ -1,0 +1,12 @@
+# node / npm stuff
+/node_modules
+/package-lock.json
+yarn-error.log
+.vscode/
+# build products
+/dist
+
+# coverage
+/.nyc_output
+/coverage
+.env

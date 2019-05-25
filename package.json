@@ -1,0 +1,25 @@
+{
+  "name": "slackbot-here-ye",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "compile": "tsc -p ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oreporan/slackbot-here-ye.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oreporan/slackbot-here-ye/issues"
+  },
+  "homepage": "https://github.com/oreporan/slackbot-here-ye#readme",
+  "dependencies": {
+    "@slack/bolt": "^1.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^3.4.5"
+  }
+}
