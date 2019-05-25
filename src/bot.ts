@@ -2,30 +2,25 @@ import {App}  from '@slack/bolt';
 
 export const start = (app: App) => {
     
-app.message('here ye here ye', async ({ message, say }) => {
-  console.log("Rockn Roll")
+app.command('/hereo', async ({ command, ack, say }) => {
+    ack()
     try {
-      say(`Calculating (shame) king of heres...`)
+      say("Calculating the channel's @here \"hero\"")
       const channelHistory = await app.client.channels.history({
-        channel: message.channel,
+        channel: command.channel_id,
         token: process.env.USER_TOKEN
       })
-      const hereKing = calculateHereKing(channelHistory)
-      const userName = await app.client.users.info({
-        token: process.env.USER_TOKEN,
-        user: hereKing.user
-      }) as any;
-      say(`The king of heres is: @${userName.user.name} with ${hereKing.here} heres`)
+      const hereKing = calculateHereHero(channelHistory)
+      say(`The Here Hero is: <@${hereKing.user}> with ${hereKing.here} heres`)
     } catch (error) {
       console.error(error);
       console.error(JSON.stringify(error.data));
+      say(`Something is broken with the Here Hero Bot...`) 
     }
   });
 }
 
-
-
-  const calculateHereKing = (channelHistory: any) => {
+  const calculateHereHero = (channelHistory: any) => {
       const candidates = channelHistory.messages.filter((x: any) => !x.subtype).reduce((all: any, msg: any) => {
           const hasHere = msg.text && (msg.text.includes('<!here>') || msg.text.includes('<!channel>'))
           if (!hasHere) return all;
