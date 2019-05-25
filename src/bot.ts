@@ -15,7 +15,7 @@ app.message('here ye here ye', async ({ message, say }) => {
         token: process.env.USER_TOKEN,
         user: hereKing.user
       }) as any;
-      say(`The king of heres is: ${userName.user.name} with ${hereKing.here} heres`)
+      say(`The king of heres is: @${userName.user.name} with ${hereKing.here} heres`)
     } catch (error) {
       console.error(error);
       console.error(JSON.stringify(error.data));
