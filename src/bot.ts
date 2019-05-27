@@ -8,6 +8,7 @@ app.command('/hereo', async ({ command, ack, say }) => {
       say("Calculating the channel's @here \"hero\"")
       const channelHistory = await app.client.channels.history({
         channel: command.channel_id,
+        count: 1000,
         token: process.env.USER_TOKEN
       })
       const hereKing = calculateHereHero(channelHistory)
