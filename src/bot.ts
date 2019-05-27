@@ -6,12 +6,8 @@ app.command('/hereo', async ({ command, ack, say }) => {
     ack()
     try {
       say("Calculating the channel's @here \"hero\"")
-      const channelHistory = await app.client.channels.history({
-        channel: command.channel_id,
-        count: 1000,
-        token: process.env.USER_TOKEN
-      })
-      const hereKing = calculateHereHero(channelHistory)
+      const messages = await getMessages(app, command.channel_id)
+      const hereKing = calculateHereHero(messages)
       say(`The Here Hero is: <@${hereKing.user}> with ${hereKing.here} heres`)
     } catch (error) {
       console.error(error);
@@ -21,8 +17,33 @@ app.command('/hereo', async ({ command, ack, say }) => {
   });
 }
 
-  const calculateHereHero = (channelHistory: any) => {
-      const candidates = channelHistory.messages.filter((x: any) => !x.subtype).reduce((all: any, msg: any) => {
+  const getMessages = async (app: App, channel: any) => {
+    let messages = []
+    let channelHistory = await app.client.channels.history({
+      channel,
+      count: 1000,
+      token: process.env.USER_TOKEN
+    }) as any
+
+    messages = channelHistory.messages;
+
+    if (channelHistory.has_more) {
+      const lastMsg = channelHistory.messages[channelHistory.messages.length -1]
+      const latest = lastMsg && lastMsg.ts
+      channelHistory = await app.client.channels.history({
+        channel,
+        latest,
+        count: 1000,
+        token: process.env.USER_TOKEN
+      }) as any
+      messages.concat(channelHistory.messages)
+    }
+
+    return messages
+  }
+
+  const calculateHereHero = (messages: any) => {
+      const candidates = messages.filter((x: any) => !x.subtype).reduce((all: any, msg: any) => {
           const hasHere = msg.text && (msg.text.includes('<!here>') || msg.text.includes('<!channel>'))
           if (!hasHere) return all;
           all[msg.user] = all[msg.user] ? all[msg.user] +1 : 1
