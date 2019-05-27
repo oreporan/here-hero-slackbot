@@ -28,6 +28,6 @@ app.command('/hereo', async ({ command, ack, say }) => {
           return all;
       }, {})
 
-      const user = Object.keys(candidates).sort((a, b) => candidates[a] - candidates[b])[0]
+      const user = Object.keys(candidates).sort((a, b) => candidates[b] - candidates[a])[0]
       return {user, here: candidates[user]}
   }
